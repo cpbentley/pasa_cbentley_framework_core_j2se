@@ -12,12 +12,12 @@ import pasa.cbentley.framework.core.j2se.ctx.CoreFrameworkJ2seCtx;
 
 public class LogConfiguratorJ2SE implements ILogConfigurator {
 
-   public LogConfiguratorJ2SE(CoreFrameworkJ2seCtx cac) {
+   public LogConfiguratorJ2SE() {
    }
 
    public void apply(IDLogConfig log) {
       log.setLevelGlobal(ITechLvl.LVL_03_FINEST);
-      log.setFlagPrint(ITechConfig.MASTER_FLAG_02_OPEN_ALL_PRINT, true);
+      log.setFlagMaster(ITechConfig.MASTER_FLAG_02_OPEN_ALL_PRINT, true);
       
       //log.setFlagTag(FLAG_09_PRINT_FLOW, true);
    }
