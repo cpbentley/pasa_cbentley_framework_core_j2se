@@ -8,6 +8,7 @@ import pasa.cbentley.byteobjects.src4.ctx.BOCtx;
 import pasa.cbentley.byteobjects.src4.interfaces.ITechStateBO;
 import pasa.cbentley.byteobjects.src4.interfaces.StatorReaderBO;
 import pasa.cbentley.core.j2se.ctx.J2seCtx;
+import pasa.cbentley.core.src4.ctx.ConfigUDef;
 import pasa.cbentley.core.src4.ctx.IConfigU;
 import pasa.cbentley.core.src4.ctx.UCtx;
 import pasa.cbentley.core.src4.logging.Dctx;
@@ -57,7 +58,7 @@ public abstract class LaunchJ2SE implements ILauncherHost {
 
    protected final CoreIO5Ctx     cio5c;
 
-   protected CoreFrameworkJ2seCtx          cjc;
+   protected CoreFrameworkJ2seCtx cjc;
 
    protected final IConfigApp     configApp;
 
@@ -76,28 +77,12 @@ public abstract class LaunchJ2SE implements ILauncherHost {
     * <li>
     */
    public LaunchJ2SE() {
-      IConfigU configu = createConfigU();
-      if (configu == null) {
-         uc = new UCtx();
-      } else {
-         uc = new UCtx(configu);
-      }
-
-      //starter logger logs things before the logging config of the application is injected
+      IConfigU configu = createConfigU(); //configU fetches the ILogConfigurator
+      //set the logconfigurator if none
       ILogConfigurator logConfigurator = this.toStringGetLoggingConfig();
-      if(logConfigurator == null) {
-         logConfigurator = new LogConfiguratorAllFinest();
-      }
-      //what if several logs? the launcher implementation must deal with it specifically
-      ILogEntryAppender appender = uc.toDLog().getDefault();
-      IDLogConfig config = appender.getConfig();
-      logConfigurator.apply(config);
+      configu.toStringSetLogConfigurator(logConfigurator);
       
-      String message = "Very First Log Message; Using LogConfigurator:"+ logConfigurator.getClass().getName();
-      uc.toDLog().pAlways(message, null, LaunchJ2SE.class, "constructor");
-
-      uc.toDLog().pAlways(null, config, LaunchJ2SE.class, "constructor");
-      
+      uc = new UCtx(configu); //consturctor deals smoothly with a null
       c5 = new C5Ctx(uc);
       boc = new BOCtx(uc);
 
@@ -108,7 +93,7 @@ public abstract class LaunchJ2SE implements ILauncherHost {
       IConfigCoreData5 configData = createConfigCoreData5(uc);
       coreDataCtx = new CoreData5Ctx(configData, boc);
 
-      String storeName = configApp.getAppName();
+      String storeName = configApp.getAppName(); //what about app without another app ?
       stateReader = new StatorReaderCoreData(coreDataCtx, storeName);
       stateReader.checkConfigErase();
       stateReader.settingsRead();
@@ -134,7 +119,7 @@ public abstract class LaunchJ2SE implements ILauncherHost {
     * @return
     */
    protected IConfigU createConfigU() {
-      return null;
+      return new ConfigUDef(null);
    }
 
    public void appExit() {
