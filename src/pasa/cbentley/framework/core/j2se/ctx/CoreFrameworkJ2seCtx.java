@@ -6,7 +6,7 @@ package pasa.cbentley.framework.core.j2se.ctx;
 
 import pasa.cbentley.byteobjects.src4.core.ByteObject;
 import pasa.cbentley.byteobjects.src4.ctx.IConfigBO;
-import pasa.cbentley.byteobjects.src4.interfaces.IStatorableBO;
+import pasa.cbentley.byteobjects.src4.stator.IStatorableBO;
 import pasa.cbentley.core.src4.ctx.UCtx;
 import pasa.cbentley.core.src4.interfaces.ITimeCtrl;
 import pasa.cbentley.core.src4.logging.Dctx;

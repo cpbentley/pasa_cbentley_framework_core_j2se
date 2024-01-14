@@ -6,7 +6,7 @@ package pasa.cbentley.framework.core.j2se.engine;
 
 import pasa.cbentley.byteobjects.src4.core.ByteObject;
 import pasa.cbentley.byteobjects.src4.ctx.BOCtx;
-import pasa.cbentley.byteobjects.src4.interfaces.StatorReaderBO;
+import pasa.cbentley.byteobjects.src4.stator.StatorReaderBO;
 
 public class StatorReaderFramework extends StatorReaderBO {
 

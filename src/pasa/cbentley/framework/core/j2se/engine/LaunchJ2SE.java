@@ -5,8 +5,8 @@
 package pasa.cbentley.framework.core.j2se.engine;
 
 import pasa.cbentley.byteobjects.src4.ctx.BOCtx;
-import pasa.cbentley.byteobjects.src4.interfaces.ITechStateBO;
-import pasa.cbentley.byteobjects.src4.interfaces.StatorReaderBO;
+import pasa.cbentley.byteobjects.src4.stator.ITechStateBO;
+import pasa.cbentley.byteobjects.src4.stator.StatorReaderBO;
 import pasa.cbentley.core.j2se.ctx.J2seCtx;
 import pasa.cbentley.core.src4.ctx.ConfigUDef;
 import pasa.cbentley.core.src4.ctx.IConfigU;
