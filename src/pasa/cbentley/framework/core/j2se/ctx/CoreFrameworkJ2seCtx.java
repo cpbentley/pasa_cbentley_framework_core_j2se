@@ -4,20 +4,27 @@
  */
 package pasa.cbentley.framework.core.j2se.ctx;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import pasa.cbentley.byteobjects.src4.core.ByteObject;
 import pasa.cbentley.byteobjects.src4.ctx.IConfigBO;
-import pasa.cbentley.byteobjects.src4.stator.IStatorableBO;
-import pasa.cbentley.core.src4.ctx.UCtx;
 import pasa.cbentley.core.src4.interfaces.ITimeCtrl;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IStringable;
-import pasa.cbentley.framework.core.j2se.engine.CoreJ2SEHost;
+import pasa.cbentley.framework.core.j2se.engine.HostCoreJ2SE;
 import pasa.cbentley.framework.core.j2se.engine.JavaTimeControl;
 import pasa.cbentley.framework.core.src4.ctx.CoreFrameworkCtx;
 import pasa.cbentley.framework.core.src4.interfaces.ILauncherHost;
 import pasa.cbentley.framework.coredata.src5.ctx.CoreData5Ctx;
 import pasa.cbentley.framework.coreio.src5.ctx.CoreIO5Ctx;
 import pasa.cbentley.framework.coreui.j2se.ctx.CoreUiJ2seCtx;
+import pasa.cbentley.framework.coreui.j2se.ctx.IConfigCoreUiJ2se;
+import pasa.cbentley.framework.coreui.j2se.engine.HostUIJ2SE;
+import pasa.cbentley.framework.coreui.src4.ctx.IConfigCoreUI;
+import pasa.cbentley.framework.coreui.src4.engine.WrapperAbstract;
+import pasa.cbentley.framework.coreui.src4.tech.IBOCanvasHost;
+import pasa.cbentley.framework.coreui.src4.tech.IBOFramePos;
 
 public abstract class CoreFrameworkJ2seCtx extends CoreFrameworkCtx implements IStringable {
 
@@ -40,6 +47,8 @@ public abstract class CoreFrameworkJ2seCtx extends CoreFrameworkCtx implements I
       return dac;
    }
 
+
+   
    public CoreIO5Ctx getCoreIO5Ctx() {
       return ioc;
    }
@@ -47,9 +56,13 @@ public abstract class CoreFrameworkJ2seCtx extends CoreFrameworkCtx implements I
    public CoreUiJ2seCtx getCoreUiJ2seCtx() {
       return cucj;
    }
+   
+   public HostUIJ2SE getHostUIJ2se() {
+      return cucj.getHostUIJ2se();
+   }
 
-   public CoreJ2SEHost getHostJ() {
-      return (CoreJ2SEHost) getHost();
+   public HostCoreJ2SE getHostJ2SE() {
+      return (HostCoreJ2SE) getHostCore();
    }
 
    public String[] getStackTrace(Throwable e) {

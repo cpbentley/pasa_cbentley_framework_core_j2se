@@ -5,18 +5,13 @@
 package pasa.cbentley.framework.core.j2se.engine;
 
 import pasa.cbentley.byteobjects.src4.ctx.BOCtx;
-import pasa.cbentley.byteobjects.src4.stator.ITechStateBO;
-import pasa.cbentley.byteobjects.src4.stator.StatorReaderBO;
 import pasa.cbentley.core.j2se.ctx.J2seCtx;
 import pasa.cbentley.core.src4.ctx.ConfigUDef;
 import pasa.cbentley.core.src4.ctx.IConfigU;
 import pasa.cbentley.core.src4.ctx.UCtx;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IDLog;
-import pasa.cbentley.core.src4.logging.IDLogConfig;
 import pasa.cbentley.core.src4.logging.ILogConfigurator;
-import pasa.cbentley.core.src4.logging.ILogEntryAppender;
-import pasa.cbentley.core.src4.logging.LogConfiguratorAllFinest;
 import pasa.cbentley.core.src5.ctx.C5Ctx;
 import pasa.cbentley.framework.core.j2se.ctx.CoreFrameworkJ2seCtx;
 import pasa.cbentley.framework.core.src4.app.IAppli;
@@ -26,13 +21,11 @@ import pasa.cbentley.framework.core.src4.engine.CoordinatorAbstract;
 import pasa.cbentley.framework.core.src4.interfaces.IDependencies;
 import pasa.cbentley.framework.core.src4.interfaces.ILauncherAppli;
 import pasa.cbentley.framework.core.src4.interfaces.ILauncherHost;
-import pasa.cbentley.framework.coredata.src4.engine.StatorReaderCoreData;
+import pasa.cbentley.framework.coredata.src4.stator.StatorCoreData;
 import pasa.cbentley.framework.coredata.src5.ctx.CoreData5Ctx;
 import pasa.cbentley.framework.coredata.src5.ctx.IConfigCoreData5;
-import pasa.cbentley.framework.coredraw.src4.ctx.IConfigCoreDraw;
 import pasa.cbentley.framework.coreio.src5.ctx.CoreIO5Ctx;
 import pasa.cbentley.framework.coreio.src5.ctx.IConfigCoreIO5;
-import pasa.cbentley.framework.coreui.j2se.ctx.IConfigCoreUiJ2se;
 
 /**
  * Abstract {@link IAppli} launcher for Java Desktop.
@@ -68,8 +61,6 @@ public abstract class LaunchJ2SE implements ILauncherHost {
 
    protected final UCtx           uc;
 
-   protected StatorReaderCoreData stateReader;
-
    /**
     * The constructor job is 
     * <li>init the logger, we may want to log code context constuctors.
@@ -77,30 +68,26 @@ public abstract class LaunchJ2SE implements ILauncherHost {
     * <li>
     */
    public LaunchJ2SE() {
+
+      //no logger yet at this stage
       IConfigU configu = createConfigU(); //configU fetches the ILogConfigurator
       //set the logconfigurator if none
       ILogConfigurator logConfigurator = this.toStringGetLoggingConfig();
       configu.toStringSetLogConfigurator(logConfigurator);
-      
-      uc = new UCtx(configu); //consturctor deals smoothly with a null
+
+      uc = new UCtx(configu); //constructor deals smoothly with a null
       c5 = new C5Ctx(uc);
       boc = new BOCtx(uc);
 
       //get hardcoded app configuration that will decides the location of ctx settings
       configApp = createConfigApp(uc, c5, boc);
 
+      //#debug
+      toDLog().pInit("ConfigApp Created", configApp, LaunchJ2SE.class, "LaunchJ2SE", LVL_05_FINE, false);
+
       //gives the data for the host code contexts
       IConfigCoreData5 configData = createConfigCoreData5(uc);
       coreDataCtx = new CoreData5Ctx(configData, boc);
-
-      String storeName = configApp.getAppName(); //what about app without another app ?
-      stateReader = new StatorReaderCoreData(coreDataCtx, storeName);
-      stateReader.checkConfigErase();
-      stateReader.settingsRead();
-      StatorReaderBO stateReaderCtx = stateReader.getStateReader(ITechStateBO.TYPE_3_CTX);
-      uc.getCtxManager().stateReadFrom(stateReaderCtx);
-
-      //when to clear the state reader?
 
       j2c = createJ2seCtx(uc, c5, boc);
 
@@ -111,6 +98,13 @@ public abstract class LaunchJ2SE implements ILauncherHost {
 
    public UCtx getUCtx() {
       return uc;
+   }
+
+   /**
+    * 
+    */
+   public void addStatorFactories(StatorCoreData stator) {
+      //sub may have some Must be called
    }
 
    /**
@@ -183,7 +177,6 @@ public abstract class LaunchJ2SE implements ILauncherHost {
     */
    public void startAppli(ILauncherAppli launcherAppli) {
       CoordinatorAbstract coordinator = getCoordinator();
-      coordinator.setStateReader(stateReader);
       coordinator.frameworkStart(launcherAppli);
 
       //this might never be called.. 

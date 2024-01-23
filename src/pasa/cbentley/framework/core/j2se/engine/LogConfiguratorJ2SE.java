@@ -8,7 +8,6 @@ import pasa.cbentley.core.src4.logging.IDLogConfig;
 import pasa.cbentley.core.src4.logging.ILogConfigurator;
 import pasa.cbentley.core.src4.logging.ITechConfig;
 import pasa.cbentley.core.src4.logging.ITechLvl;
-import pasa.cbentley.framework.core.j2se.ctx.CoreFrameworkJ2seCtx;
 
 public class LogConfiguratorJ2SE implements ILogConfigurator {
 

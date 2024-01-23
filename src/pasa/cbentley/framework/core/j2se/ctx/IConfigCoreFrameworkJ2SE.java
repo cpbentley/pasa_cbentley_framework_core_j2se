@@ -5,8 +5,6 @@
 package pasa.cbentley.framework.core.j2se.ctx;
 
 import pasa.cbentley.framework.core.src4.ctx.IConfigCoreFramework;
-import pasa.cbentley.framework.coredata.src4.ctx.IConfigCoreData;
-import pasa.cbentley.framework.coredata.src5.ctx.IConfigCoreData5;
 
 /**
  * 

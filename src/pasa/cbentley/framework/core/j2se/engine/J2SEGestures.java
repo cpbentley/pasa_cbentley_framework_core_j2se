@@ -10,7 +10,7 @@ import pasa.cbentley.core.src4.logging.IDLog;
 import pasa.cbentley.framework.core.j2se.ctx.CoreFrameworkJ2seCtx;
 import pasa.cbentley.framework.coreui.src4.ctx.ToStringStaticCoreUi;
 import pasa.cbentley.framework.coreui.src4.interfaces.IHostGestures;
-import pasa.cbentley.framework.coreui.src4.interfaces.ISenses;
+import pasa.cbentley.framework.coreui.src4.interfaces.ITechSenses;
 import pasa.cbentley.framework.coreui.src4.tech.ITechGestures;
 
 public class J2SEGestures implements IHostGestures, ITechGestures {
@@ -25,9 +25,9 @@ public class J2SEGestures implements IHostGestures, ITechGestures {
    public void enableGesture(int flag) {
       //#debug
       d.toDLog().pEvent("" + ToStringStaticCoreUi.getStringGestureType(flag), null, J2SEGestures.class, "enableGesture");
-      if (flag == ISenses.GESTURE_TYPE_05_SHAKE) {
+      if (flag == ITechSenses.GESTURE_TYPE_05_SHAKE) {
 
-      } else if (flag == ISenses.GESTURE_TYPE_07_MOVE) {
+      } else if (flag == ITechSenses.GESTURE_TYPE_07_MOVE) {
 
       }
    }
