@@ -12,6 +12,7 @@ import pasa.cbentley.byteobjects.src4.ctx.IConfigBO;
 import pasa.cbentley.core.src4.interfaces.ITimeCtrl;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IStringable;
+import pasa.cbentley.core.src5.ctx.C5Ctx;
 import pasa.cbentley.framework.core.j2se.engine.HostCoreJ2SE;
 import pasa.cbentley.framework.core.j2se.engine.JavaTimeControl;
 import pasa.cbentley.framework.core.src4.ctx.CoreFrameworkCtx;
@@ -32,14 +33,14 @@ public abstract class CoreFrameworkJ2seCtx extends CoreFrameworkCtx implements I
 
    protected final CoreData5Ctx  dac;
 
-   protected final CoreIO5Ctx    ioc;
+   protected final CoreIO5Ctx    ioc5;
 
    private JavaTimeControl       timeCtrl;
 
    public CoreFrameworkJ2seCtx(IConfigCoreFrameworkJ2SE config, CoreUiJ2seCtx cuc, CoreData5Ctx dac, CoreIO5Ctx ioc, ILauncherHost launcher) {
       super(config, cuc, dac, ioc, launcher);
       this.dac = dac;
-      this.ioc = ioc;
+      this.ioc5 = ioc;
       this.cucj = cuc;
    }
 
@@ -48,9 +49,12 @@ public abstract class CoreFrameworkJ2seCtx extends CoreFrameworkCtx implements I
    }
 
 
+   public C5Ctx getC5() {
+      return ioc5.getC5();
+   }
    
    public CoreIO5Ctx getCoreIO5Ctx() {
-      return ioc;
+      return ioc5;
    }
 
    public CoreUiJ2seCtx getCoreUiJ2seCtx() {
@@ -102,7 +106,7 @@ public abstract class CoreFrameworkJ2seCtx extends CoreFrameworkCtx implements I
    }
 
    public void toString1Line(Dctx dc) {
-      dc.root1Line(this, "CoreJ2seCtx");
+      dc.root1Line(this, CoreFrameworkJ2seCtx.class);
       toStringPrivate(dc);
       super.toString1Line(dc.sup1Line());
    }

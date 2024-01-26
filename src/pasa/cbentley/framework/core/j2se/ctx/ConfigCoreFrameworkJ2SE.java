@@ -12,24 +12,20 @@ import pasa.cbentley.framework.coredata.src4.ctx.IConfigCoreData;
 import pasa.cbentley.framework.coredata.src5.ctx.ConfigCoreData5Default;
 import pasa.cbentley.framework.coredata.src5.ctx.IConfigCoreData5;
 import pasa.cbentley.framework.coreio.src4.ctx.IConfigCoreIO;
-import pasa.cbentley.framework.coreio.src5.ctx.ConfigIO5Def;
+import pasa.cbentley.framework.coreio.src5.ctx.ConfigCoreIO5Def;
 
 public abstract class ConfigCoreFrameworkJ2SE extends ConfigAbstractBO implements IConfigCoreFrameworkJ2SE {
 
-   private ConfigIO5Def           configIO;
+   private ConfigCoreIO5Def           configIO;
 
    private ConfigCoreData5Default configData;
 
    public ConfigCoreFrameworkJ2SE(UCtx uc) {
       super(uc);
-   }
-
-   public ConfigCoreFrameworkJ2SE(J2seCtx j2c) {
-      super(j2c.getUCtx());
-
-      configIO = new ConfigIO5Def(j2c.getC5());
+      configIO = new ConfigCoreIO5Def(uc);
       configData = new ConfigCoreData5Default(uc);
    }
+
 
    public boolean isUsingScreenConfig() {
       return true;

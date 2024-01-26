@@ -11,16 +11,22 @@ import pasa.cbentley.framework.core.src4.interfaces.ILauncherHost;
 
 public abstract class CoordinatorJ2SE extends CoordinatorAbstract {
 
+   protected ShutDownHook shutDownHook;
 
    protected CoordinatorJ2SE(CoreFrameworkJ2seCtx cac, ILauncherHost launcherHost) {
       super(cac, launcherHost);
-      ShutDownHook shutDownHook = new ShutDownHook(this);
+
+      shutDownHook = new ShutDownHook(this);
       Runtime.getRuntime().addShutdownHook(shutDownHook);
+   }
+   
+   public ShutDownHook getShutDownHook() {
+      return shutDownHook;
    }
 
    protected void subExit() {
       //get the settings of the app
-      if(isLoaded()) {
+      if (isLoaded()) {
       }
       subExitJ2SE();
    }
@@ -38,13 +44,12 @@ public abstract class CoordinatorJ2SE extends CoordinatorAbstract {
    protected abstract void subPauseJ2SE();
 
    protected abstract void subResumeJ2SE();
-   
+
    //#mdebug
    public void toString(Dctx dc) {
-      dc.root(this, CoordinatorJ2SE.class,41);
+      dc.root(this, CoordinatorJ2SE.class, 41);
       super.toString(dc.sup());
    }
-
 
    public void toString1Line(Dctx dc) {
       dc.root1Line(this, CoordinatorJ2SE.class);

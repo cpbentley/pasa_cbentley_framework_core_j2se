@@ -21,11 +21,13 @@ import pasa.cbentley.framework.core.src4.engine.CoordinatorAbstract;
 import pasa.cbentley.framework.core.src4.interfaces.IDependencies;
 import pasa.cbentley.framework.core.src4.interfaces.ILauncherAppli;
 import pasa.cbentley.framework.core.src4.interfaces.ILauncherHost;
-import pasa.cbentley.framework.coredata.src4.stator.StatorCoreData;
 import pasa.cbentley.framework.coredata.src5.ctx.CoreData5Ctx;
 import pasa.cbentley.framework.coredata.src5.ctx.IConfigCoreData5;
+import pasa.cbentley.framework.coredraw.j2se.ctx.CoreDrawJ2seCtx;
 import pasa.cbentley.framework.coreio.src5.ctx.CoreIO5Ctx;
 import pasa.cbentley.framework.coreio.src5.ctx.IConfigCoreIO5;
+import pasa.cbentley.framework.coreui.j2se.ctx.CoreUiJ2seCtx;
+import pasa.cbentley.framework.coreui.src4.interfaces.IWrapperManager;
 
 /**
  * Abstract {@link IAppli} launcher for Java Desktop.
@@ -40,26 +42,23 @@ import pasa.cbentley.framework.coreio.src5.ctx.IConfigCoreIO5;
  * 
  * and initialize the data access based on the cfg parameters.
  * 
+ * <li> {@link CoordinatorAbstract} implementation
  * @author Charles Bentley
  *
  */
 public abstract class LaunchJ2SE implements ILauncherHost {
 
-   protected final BOCtx          boc;
+   protected final BOCtx                boc;
 
-   protected final C5Ctx          c5;
+   protected final C5Ctx                c5;
 
-   protected final CoreIO5Ctx     cio5c;
+   protected final CoreFrameworkJ2seCtx cfc;
 
-   protected CoreFrameworkJ2seCtx cjc;
+   protected CoordinatorJ2SE            coordinator;
 
-   protected final IConfigApp     configApp;
+   protected final J2seCtx              j2c;
 
-   protected final CoreData5Ctx   coreDataCtx;
-
-   protected final J2seCtx        j2c;
-
-   protected final UCtx           uc;
+   protected final UCtx                 uc;
 
    /**
     * The constructor job is 
@@ -75,37 +74,67 @@ public abstract class LaunchJ2SE implements ILauncherHost {
       ILogConfigurator logConfigurator = this.toStringGetLoggingConfig();
       configu.toStringSetLogConfigurator(logConfigurator);
 
-      uc = new UCtx(configu); //constructor deals smoothly with a null
-      c5 = new C5Ctx(uc);
+      uc = new UCtx(configu, "LaunchJ2SE"); //constructor deals smoothly with a null
       boc = new BOCtx(uc);
+      c5 = new C5Ctx(uc);
 
-      //get hardcoded app configuration that will decides the location of ctx settings
-      configApp = createConfigApp(uc, c5, boc);
-
-      //#debug
-      toDLog().pInit("ConfigApp Created", configApp, LaunchJ2SE.class, "LaunchJ2SE", LVL_05_FINE, false);
 
       //gives the data for the host code contexts
       IConfigCoreData5 configData = createConfigCoreData5(uc);
-      coreDataCtx = new CoreData5Ctx(configData, boc);
-
-      j2c = createJ2seCtx(uc, c5, boc);
+      CoreData5Ctx coreDataCtx = new CoreData5Ctx(configData, boc);
 
       //configuration decide what directory to use
       IConfigCoreIO5 configIO = createConfigCoreIO(uc);
-      cio5c = new CoreIO5Ctx(configIO, uc);
-   }
+      CoreIO5Ctx cio5c = new CoreIO5Ctx(configIO, c5);
 
-   public UCtx getUCtx() {
+      j2c = createJ2seCtx(uc, c5, boc);
+      CoreDrawJ2seCtx cdc = createCoreDrawJ2seCtx(j2c, boc);
+      CoreUiJ2seCtx cuc = createCoreUiJ2seCtx(cdc, cio5c);
+
+      cfc = createCoreFrameworkJ2seCtx(cuc, coreDataCtx, cio5c);
+
+      coordinator = createCoodinator(cfc);
+
+      IWrapperManager wrapperManager = createWrapperManager(cfc);
+      cuc.setWrapperManager(wrapperManager);
+
+   }
+   
+   public UCtx getUC() {
       return uc;
    }
+   
+   public BOCtx getBOC() {
+      return boc;
+   }
+
+   public LaunchJ2SE(CoreFrameworkJ2seCtx cfc) {
+      this.cfc = cfc;
+      this.uc = cfc.getUC();
+      this.boc = cfc.getBOC();
+      this.c5 = cfc.getC5();
+      j2c = createJ2seCtx(uc, c5, boc);
+
+   }
+
+   public void appExit() {
+      //ask others to write their state
+   }
+
+   public void appPause() {
+   }
+
 
    /**
-    * 
+    * Creates a hardcoded config. It will be used to read from disk for a saved config
+    * @param uc
+    * @return
     */
-   public void addStatorFactories(StatorCoreData stator) {
-      //sub may have some Must be called
-   }
+   public abstract IConfigApp createConfigApp(UCtx uc);
+
+   public abstract IConfigCoreData5 createConfigCoreData5(UCtx uc);
+
+   public abstract IConfigCoreIO5 createConfigCoreIO(UCtx uc);
 
    /**
     * Override if you want to give a special config
@@ -113,47 +142,64 @@ public abstract class LaunchJ2SE implements ILauncherHost {
     * @return
     */
    protected IConfigU createConfigU() {
-      return new ConfigUDef(null);
+      return new ConfigUDef();
    }
 
-   public void appExit() {
-      //ask others to write their state
+   public abstract CoordinatorJ2SE createCoodinator(CoreFrameworkJ2seCtx cfc);
+
+   public abstract CoreDrawJ2seCtx createCoreDrawJ2seCtx(J2seCtx j2c, BOCtx boc);
+
+   public abstract CoreFrameworkJ2seCtx createCoreFrameworkJ2seCtx(CoreUiJ2seCtx cuc, CoreData5Ctx cdc, CoreIO5Ctx cio5c);
+
+   public abstract CoreUiJ2seCtx createCoreUiJ2seCtx(CoreDrawJ2seCtx cdc, CoreIO5Ctx cio5c);
+
+   public abstract J2seCtx createJ2seCtx(UCtx uc, C5Ctx c5, BOCtx boc);
+
+   /**
+    * Creates the {@link ILauncherAppli} for the {@link IAppli}.
+    * The launcher will have the host configuration and create its specific {@link IConfigApp}
+    * @return
+    */
+   protected abstract ILauncherAppli createLauncher(UCtx uc);
+
+   /**
+    * Decides which swing wrapper to use when creating canvases.
+    * 
+    * <li> {@link CanvasOwnerDefaultSwing}
+    * @param cfc
+    * @return {@link IWrapperManager}
+    */
+   public abstract IWrapperManager createWrapperManager(CoreFrameworkJ2seCtx cfc);
+
+   public IAppli getAppli() {
+      return coordinator.getAppli();
+   }
+
+   /**
+    * The {@link CoreFrameworkCtx} created in the constructor
+    */
+   public CoreFrameworkCtx getCFC() {
+      return cfc;
+   }
+
+   public CoreFrameworkJ2seCtx getCFCJ2() {
+      return cfc;
+   }
+
+   public CoordinatorAbstract getCoordinator() {
+      return coordinator;
    }
 
    public IDependencies getDependencies() {
       if (this instanceof IDependencies) {
          return (IDependencies) this;
       }
-      throw new RuntimeException("Dependencings have not been defined");
+      throw new RuntimeException("Dependencings have not been defined on this launcher");
    }
 
-   public void appPause() {
+   public UCtx getUCtx() {
+      return uc;
    }
-
-   public IConfigApp createConfigApp(UCtx uc) {
-      return createConfigApp(uc, c5, boc);
-   }
-
-   /**
-    * Creates a hardcoded config. It will be used to read from disk for a saved config
-    * @param uc
-    * @return
-    */
-   public abstract IConfigApp createConfigApp(UCtx uc, C5Ctx c5, BOCtx bo);
-
-   public abstract IConfigCoreData5 createConfigCoreData5(UCtx uc);
-
-   public abstract IConfigCoreIO5 createConfigCoreIO(UCtx uc);
-
-   public abstract J2seCtx createJ2seCtx(UCtx uc, C5Ctx c5, BOCtx boc);
-
-   /**
-    * Creates the {@link ILauncherAppli} for the {@link IAppli}.
-    * The launcher will have the host configuration and create its specific
-    * {@link IConfigApp}
-    * @return
-    */
-   protected abstract ILauncherAppli createLauncher(UCtx uc);
 
    public void initConfiguration() {
 
@@ -165,8 +211,6 @@ public abstract class LaunchJ2SE implements ILauncherHost {
       //shake hands with Host
       this.startAppli(launcherAppli);
    }
-
-   public abstract CoordinatorAbstract getCoordinator();
 
    /**
     * The {@link ILauncherAppli} is known. Start it for starting the application.
@@ -193,7 +237,7 @@ public abstract class LaunchJ2SE implements ILauncherHost {
    }
 
    public void toString(Dctx dc) {
-      dc.root(this, LaunchJ2SE.class);
+      dc.root(this, LaunchJ2SE.class,250);
       toStringPrivate(dc);
       dc.nlLvl(getCoordinator());
       ILogConfigurator logConfigurator = toStringGetLoggingConfig();
@@ -214,6 +258,13 @@ public abstract class LaunchJ2SE implements ILauncherHost {
    }
 
    /**
+    * Called 
+    */
+   public void toStringEnableFullDebug() {
+      getCoordinator().toStringEnableFullDebug();
+   }
+
+   /**
     * Returns the logging configurator for the logger
     */
    public ILogConfigurator toStringGetLoggingConfig() {
@@ -222,13 +273,6 @@ public abstract class LaunchJ2SE implements ILauncherHost {
 
    public UCtx toStringGetUCtx() {
       return uc;
-   }
-
-   /**
-    * Called 
-    */
-   public void toStringEnableFullDebug() {
-      getCoordinator().toStringEnableFullDebug();
    }
 
    private void toStringPrivate(Dctx dc) {

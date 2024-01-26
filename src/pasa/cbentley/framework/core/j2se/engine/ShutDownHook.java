@@ -8,14 +8,25 @@ public class ShutDownHook extends Thread implements Runnable {
 
    protected final CoordinatorJ2SE coord;
 
+   private Runnable                runExtra;
+
    public ShutDownHook(CoordinatorJ2SE coord) {
       this.coord = coord;
+   }
+
+   public void addRunAfterAppExit(Runnable run) {
+      this.runExtra = run;
    }
 
    public void run() {
       //#debug
       coord.toDLog().pFlow("", null, ShutDownHook.class, "run");
+
+      coord.frameworkExit();
+
+      if (runExtra != null) {
+         runExtra.run();
+      }
    }
-   
-   
+
 }

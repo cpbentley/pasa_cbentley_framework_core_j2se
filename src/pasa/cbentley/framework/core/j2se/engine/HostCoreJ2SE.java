@@ -17,6 +17,7 @@ import pasa.cbentley.framework.core.src4.engine.CoreHostAbstract;
 import pasa.cbentley.framework.core.src4.interfaces.ITechDataHost;
 import pasa.cbentley.framework.core.src4.interfaces.ITechHostCore;
 import pasa.cbentley.framework.coreui.src4.event.GestureArea;
+import pasa.cbentley.framework.coreui.src4.interfaces.IHostUI;
 import pasa.cbentley.framework.coreui.src4.tech.IBOCanvasHost;
 
 /**
@@ -37,39 +38,98 @@ public abstract class HostCoreJ2SE extends CoreHostAbstract implements ITechHost
       this.cfcj2se = cfcj2se;
    }
 
+   public IHostUI getHostUI() {
+      return cfcj2se.getCUC().getHostUI();
+   }
    /**
     * Most will use the Bentley framework values which correspond to a
     * 1200*800 screen
     */
    public int getHostInt(int dataID) {
+      int uiint = getHostUI().getHostInt(dataID);
+      if(uiint != Integer.MIN_VALUE) {
+         return uiint;
+      }
       switch (dataID) {
          default:
             break;
       }
-      return 0;
+      return Integer.MIN_VALUE;
    }
 
    public boolean hasFeatureSupport(int supportID) {
+      boolean hasSupport = getHostUI().hasFeatureSupport(supportID);
+      if(hasSupport) {
+         return true;
+      } else {
+         switch (supportID) {
+            default:
+               break;
+         }
+      }
       return false;
    }
 
    public boolean enableFeature(int featureID, boolean b) {
+      boolean hasSupport = getHostUI().enableFeature(featureID,b);
+      if(hasSupport) {
+         return true;
+      } else {
+         switch (featureID) {
+            default:
+               break;
+         }
+      }
       return false;
    }
 
    public boolean isFeatureEnabled(int featureID) {
+      boolean hasSupport = getHostUI().isFeatureEnabled(featureID);
+      if(hasSupport) {
+         return true;
+      } else {
+         switch (featureID) {
+            default:
+               break;
+         }
+      }
       return false;
    }
 
    public float getHostFloat(int dataID) {
-      return 0;
+      float uiint = getHostUI().getHostFloat(dataID);
+      if(uiint != Float.MIN_VALUE) {
+         return uiint;
+      }
+      switch (dataID) {
+         default:
+            break;
+      }
+      return Float.MIN_VALUE;
    }
 
    public boolean enableFeatureFactory(int featureID, boolean b) {
+      boolean hasSupport = getHostUI().enableFeatureFactory(featureID,b);
+      if(hasSupport) {
+         return true;
+      } else {
+         switch (featureID) {
+            default:
+               break;
+         }
+      }
       return false;
    }
 
    public Object getHostObject(int id) {
+      Object uiint = getHostUI().getHostFloat(id);
+      if(uiint != null) {
+         return uiint;
+      }
+      switch (id) {
+         default:
+            break;
+      }
       return null;
    }
 
@@ -77,7 +137,13 @@ public abstract class HostCoreJ2SE extends CoreHostAbstract implements ITechHost
     * 
     */
    public String getHostString(int dataID) {
+      String uiint = getHostUI().getHostString(dataID);
+      if(uiint != null) {
+         return uiint;
+      }
       switch (dataID) {
+         default:
+            break;
       }
       return null;
    }
