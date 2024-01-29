@@ -4,6 +4,15 @@
  */
 package pasa.cbentley.framework.core.j2se.engine;
 
+/**
+ * Usefull when JUnit testing the framework.
+ * 
+ * Be careful as this Hook will run its own thread, potentially creating deadlocks
+ * 
+ * So it cannot access GUI or AWT locked 
+ * @author Charles Bentley
+ *
+ */
 public class ShutDownHook extends Thread implements Runnable {
 
    protected final CoordinatorJ2SE coord;
@@ -20,9 +29,8 @@ public class ShutDownHook extends Thread implements Runnable {
 
    public void run() {
       //#debug
-      coord.toDLog().pFlow("", null, ShutDownHook.class, "run");
+      coord.toDLog().pFlow("", null, ShutDownHook.class, "run@23");
 
-      coord.frameworkExit();
 
       if (runExtra != null) {
          runExtra.run();

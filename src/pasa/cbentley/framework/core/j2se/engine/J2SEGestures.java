@@ -24,7 +24,7 @@ public class J2SEGestures implements IHostGestures, ITechGestures {
    @Override
    public void enableGesture(int flag) {
       //#debug
-      d.toDLog().pEvent("" + ToStringStaticCoreUi.getStringGestureType(flag), null, J2SEGestures.class, "enableGesture");
+      d.toDLog().pEvent("" + ToStringStaticCoreUi.toStringGestureType(flag), null, J2SEGestures.class, "enableGesture");
       if (flag == ITechSenses.GESTURE_TYPE_05_SHAKE) {
 
       } else if (flag == ITechSenses.GESTURE_TYPE_07_MOVE) {
@@ -40,7 +40,7 @@ public class J2SEGestures implements IHostGestures, ITechGestures {
    @Override
    public void disableGesture(int flag) {
       //#debug
-      d.toDLog().pEvent("" + ToStringStaticCoreUi.getStringGestureType(flag), null, J2SEGestures.class, "disableGesture");
+      d.toDLog().pEvent("" + ToStringStaticCoreUi.toStringGestureType(flag), null, J2SEGestures.class, "disableGesture");
 
    }
 
