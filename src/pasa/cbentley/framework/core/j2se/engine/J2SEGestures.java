@@ -72,7 +72,7 @@ public class J2SEGestures implements IHostGestures, ITechGestures {
    }
 
    public UCtx toStringGetUCtx() {
-      return d.getUCtx();
+      return d.getUC();
    }
 
    //#enddebug
