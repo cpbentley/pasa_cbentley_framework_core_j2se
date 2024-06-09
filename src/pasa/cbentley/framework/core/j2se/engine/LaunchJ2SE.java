@@ -19,7 +19,7 @@ import pasa.cbentley.framework.core.src4.app.IConfigApp;
 import pasa.cbentley.framework.core.src4.ctx.CoreFrameworkCtx;
 import pasa.cbentley.framework.core.src4.engine.CoordinatorAbstract;
 import pasa.cbentley.framework.core.src4.interfaces.IDependencies;
-import pasa.cbentley.framework.core.src4.interfaces.ILauncherAppli;
+import pasa.cbentley.framework.core.src4.interfaces.ICreatorAppli;
 import pasa.cbentley.framework.core.src4.interfaces.ILauncherHost;
 import pasa.cbentley.framework.coredata.src5.ctx.CoreData5Ctx;
 import pasa.cbentley.framework.coredata.src5.ctx.IConfigCoreData5;
@@ -137,7 +137,7 @@ public abstract class LaunchJ2SE implements ILauncherHost {
    public abstract IConfigCoreIO5 createConfigCoreIO(UCtx uc);
 
    /**
-    * Override if you want to give a special config
+    * Override if you want to give a special config that is not {@link ConfigUDef}.
     * @param uc
     * @return
     */
@@ -156,11 +156,11 @@ public abstract class LaunchJ2SE implements ILauncherHost {
    public abstract J2seCtx createJ2seCtx(UCtx uc, C5Ctx c5, BOCtx boc);
 
    /**
-    * Creates the {@link ILauncherAppli} for the {@link IAppli}.
+    * Creates the {@link ICreatorAppli} for the {@link IAppli}.
     * The launcher will have the host configuration and create its specific {@link IConfigApp}
     * @return
     */
-   protected abstract ILauncherAppli createLauncher(UCtx uc);
+   protected abstract ICreatorAppli createCreator(UCtx uc);
 
    /**
     * Decides which swing wrapper to use when creating canvases.
@@ -207,19 +207,19 @@ public abstract class LaunchJ2SE implements ILauncherHost {
 
    public void launch() {
       //appli launcher 2nd class
-      ILauncherAppli launcherAppli = createLauncher(uc);
+      ICreatorAppli launcherAppli = createCreator(uc);
       //shake hands with Host
       this.startAppli(launcherAppli);
    }
 
    /**
-    * The {@link ILauncherAppli} is known. Start it for starting the application.
+    * The {@link ICreatorAppli} is known. Start it for starting the application.
     * <br>
     * <li> Swing needs special way to start appli in the GUI thread.
     * <li> JavaFx ...
     * <li>
     */
-   public void startAppli(ILauncherAppli launcherAppli) {
+   public void startAppli(ICreatorAppli launcherAppli) {
       CoordinatorAbstract coordinator = getCoordinator();
       coordinator.frameworkStart(launcherAppli);
 
