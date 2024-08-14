@@ -30,23 +30,11 @@ import pasa.cbentley.framework.core.ui.j2se.ctx.CoreUiJ2seCtx;
 import pasa.cbentley.framework.core.ui.src4.interfaces.IWrapperManager;
 
 /**
- * Abstract {@link IAppli} launcher for Java Desktop.
- * <br>
- * Represents the MIDlet or the android Activity for J2SE based hosts.
- * 
- * The {@link CoordinatorAbstract} does the actual work.
- * 
- * The launcher creates the {@link CoreFrameworkCtx} instance.
- * 
- * It creates the necessary dependencies for the constructor
- * 
- * and initialize the data access based on the cfg parameters.
- * 
- * <li> {@link CoordinatorAbstract} implementation
+ * Launcher for a Many Appli
  * @author Charles Bentley
  *
  */
-public abstract class LaunchJ2SE implements ILauncherHost {
+public abstract class LaunchJ2seMany implements ILauncherHost {
 
    protected final BOCtx                boc;
 
@@ -68,7 +56,7 @@ public abstract class LaunchJ2SE implements ILauncherHost {
     * <li>to create the code context with their state as soon as possible.
     * <li>
     */
-   public LaunchJ2SE() {
+   public LaunchJ2seMany() {
 
       //no logger yet at this stage
       IConfigU configu = createConfigU(); //configU fetches the ILogConfigurator
@@ -100,11 +88,11 @@ public abstract class LaunchJ2SE implements ILauncherHost {
       cuc.setWrapperManager(wrapperManager);
 
       //#debug
-      toDLog().pCreate("", this, LaunchJ2SE.class, "Created@103", LVL_04_FINER, true);
+      toDLog().pCreate("", this, LaunchJ2seMany.class, "Created@103", LVL_04_FINER, true);
 
    }
 
-   public LaunchJ2SE(CoreFrameworkJ2seCtx cfc) {
+   public LaunchJ2seMany(CoreFrameworkJ2seCtx cfc) {
       this.cfc = cfc;
       this.uc = cfc.getUC();
       this.boc = cfc.getBOC();
@@ -212,7 +200,7 @@ public abstract class LaunchJ2SE implements ILauncherHost {
       //appli launcher 2nd class
       creatorAppli = createCreator(uc);
 
-      toDLog().pInit("CreatorAppli created : ", creatorAppli, LaunchJ2SE.class, "launch@213", LVL_05_FINE, true);
+      toDLog().pInit("CreatorAppli created : ", creatorAppli, LaunchJ2seMany.class, "launch@213", LVL_05_FINE, true);
 
       //shake hands with Host
       this.startAppli(creatorAppli);
@@ -228,7 +216,7 @@ public abstract class LaunchJ2SE implements ILauncherHost {
    public void startAppli(ICreatorAppli creatorAppli) {
       CoordinatorAbstract coordinator = getCoordinator();
 
-      toDLog().pInit("CreatorAppli Created", creatorAppli, LaunchJ2SE.class, "startAppli@213", LVL_05_FINE, DEV_0_1LINE_THREAD);
+      toDLog().pInit("CreatorAppli Created", creatorAppli, LaunchJ2seMany.class, "startAppli@213", LVL_05_FINE, DEV_0_1LINE_THREAD);
       coordinator.frameworkStart(creatorAppli);
 
       //this might never be called.. 
@@ -245,7 +233,7 @@ public abstract class LaunchJ2SE implements ILauncherHost {
    }
 
    public void toString(Dctx dc) {
-      dc.root(this, LaunchJ2SE.class, 250);
+      dc.root(this, LaunchJ2seMany.class, 250);
       toStringPrivate(dc);
       dc.nlLvl(coordinator, "coordinator");
       dc.nlLvl(creatorAppli, "creatorAppli");
@@ -263,7 +251,7 @@ public abstract class LaunchJ2SE implements ILauncherHost {
    }
 
    public void toString1Line(Dctx dc) {
-      dc.root1Line(this, LaunchJ2SE.class);
+      dc.root1Line(this, LaunchJ2seMany.class);
       toStringPrivate(dc);
    }
 
