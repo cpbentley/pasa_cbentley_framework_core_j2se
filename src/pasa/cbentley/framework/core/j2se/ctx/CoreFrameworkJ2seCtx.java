@@ -4,28 +4,18 @@
  */
 package pasa.cbentley.framework.core.j2se.ctx;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-
 import pasa.cbentley.byteobjects.src4.core.ByteObject;
 import pasa.cbentley.byteobjects.src4.ctx.IConfigBO;
 import pasa.cbentley.core.src4.interfaces.ITimeCtrl;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IStringable;
 import pasa.cbentley.core.src5.ctx.C5Ctx;
-import pasa.cbentley.framework.core.j2se.engine.HostCoreJ2SE;
-import pasa.cbentley.framework.core.j2se.engine.JavaTimeControl;
-import pasa.cbentley.framework.core.src4.ctx.CoreFrameworkCtx;
-import pasa.cbentley.framework.core.src4.interfaces.ILauncherHost;
-import pasa.cbentley.framework.coredata.src5.ctx.CoreData5Ctx;
-import pasa.cbentley.framework.coreio.src5.ctx.CoreIO5Ctx;
-import pasa.cbentley.framework.coreui.j2se.ctx.CoreUiJ2seCtx;
-import pasa.cbentley.framework.coreui.j2se.ctx.IConfigCoreUiJ2se;
-import pasa.cbentley.framework.coreui.j2se.engine.HostUIJ2SE;
-import pasa.cbentley.framework.coreui.src4.ctx.IConfigCoreUI;
-import pasa.cbentley.framework.coreui.src4.engine.WrapperAbstract;
-import pasa.cbentley.framework.coreui.src4.tech.IBOCanvasHost;
-import pasa.cbentley.framework.coreui.src4.tech.IBOFramePos;
+import pasa.cbentley.framework.core.data.src5.ctx.CoreData5Ctx;
+import pasa.cbentley.framework.core.framework.src4.ctx.CoreFrameworkCtx;
+import pasa.cbentley.framework.core.framework.src4.interfaces.ILauncherHost;
+import pasa.cbentley.framework.core.io.src5.ctx.CoreIO5Ctx;
+import pasa.cbentley.framework.core.ui.j2se.ctx.CoreUiJ2seCtx;
+import pasa.cbentley.framework.core.ui.j2se.engine.TimeControlJ2se;
 
 public abstract class CoreFrameworkJ2seCtx extends CoreFrameworkCtx implements IStringable {
 
@@ -34,8 +24,6 @@ public abstract class CoreFrameworkJ2seCtx extends CoreFrameworkCtx implements I
    protected final CoreData5Ctx  dac;
 
    protected final CoreIO5Ctx    ioc5;
-
-   private JavaTimeControl       timeCtrl;
 
    public CoreFrameworkJ2seCtx(IConfigCoreFrameworkJ2SE config, CoreUiJ2seCtx cuc, CoreData5Ctx dac, CoreIO5Ctx ioc, ILauncherHost launcher) {
       super(config, cuc, dac, ioc, launcher);
@@ -61,13 +49,6 @@ public abstract class CoreFrameworkJ2seCtx extends CoreFrameworkCtx implements I
       return cucj;
    }
    
-   public HostUIJ2SE getHostUIJ2se() {
-      return cucj.getHostUIJ2se();
-   }
-
-   public HostCoreJ2SE getHostJ2SE() {
-      return (HostCoreJ2SE) getHostCore();
-   }
 
    public String[] getStackTrace(Throwable e) {
       if (e == null) {
@@ -81,13 +62,6 @@ public abstract class CoreFrameworkJ2seCtx extends CoreFrameworkCtx implements I
       return str;
    }
 
-   public ITimeCtrl getTimeCtrl() {
-
-      if (timeCtrl == null) {
-         timeCtrl = new JavaTimeControl();
-      }
-      return timeCtrl;
-   }
 
    protected void matchConfig(IConfigBO config, ByteObject settings) {
       super.matchConfig(config, settings);

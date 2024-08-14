@@ -5,14 +5,14 @@
 package pasa.cbentley.framework.core.j2se.ctx;
 
 import pasa.cbentley.byteobjects.src4.ctx.ConfigAbstractBO;
-import pasa.cbentley.core.j2se.ctx.J2seCtx;
+import pasa.cbentley.core.j2se.ctx.J2seCoreCtx;
 import pasa.cbentley.core.src4.ctx.UCtx;
 import pasa.cbentley.core.src4.logging.Dctx;
-import pasa.cbentley.framework.coredata.src4.ctx.IConfigCoreData;
-import pasa.cbentley.framework.coredata.src5.ctx.ConfigCoreData5Default;
-import pasa.cbentley.framework.coredata.src5.ctx.IConfigCoreData5;
-import pasa.cbentley.framework.coreio.src4.ctx.IConfigCoreIO;
-import pasa.cbentley.framework.coreio.src5.ctx.ConfigCoreIO5Def;
+import pasa.cbentley.framework.core.data.src4.ctx.IConfigCoreData;
+import pasa.cbentley.framework.core.data.src5.ctx.ConfigCoreData5Default;
+import pasa.cbentley.framework.core.data.src5.ctx.IConfigCoreData5;
+import pasa.cbentley.framework.core.io.src4.ctx.IConfigCoreIO;
+import pasa.cbentley.framework.core.io.src5.ctx.ConfigCoreIO5Def;
 
 public abstract class ConfigCoreFrameworkJ2SE extends ConfigAbstractBO implements IConfigCoreFrameworkJ2SE {
 

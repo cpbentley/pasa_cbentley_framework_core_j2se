@@ -6,8 +6,8 @@ package pasa.cbentley.framework.core.j2se.engine;
 
 import pasa.cbentley.byteobjects.src4.core.ByteObject;
 import pasa.cbentley.core.src4.logging.IStringable;
-import pasa.cbentley.framework.core.src4.app.IAppli;
-import pasa.cbentley.framework.coreui.src4.interfaces.ICanvasAppli;
+import pasa.cbentley.framework.core.framework.src4.app.IAppli;
+import pasa.cbentley.framework.core.ui.src4.interfaces.ICanvasAppli;
 
 /**
  * @author Charles-Philip

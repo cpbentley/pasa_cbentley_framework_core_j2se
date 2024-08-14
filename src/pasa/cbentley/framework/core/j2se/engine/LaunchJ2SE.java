@@ -5,7 +5,7 @@
 package pasa.cbentley.framework.core.j2se.engine;
 
 import pasa.cbentley.byteobjects.src4.ctx.BOCtx;
-import pasa.cbentley.core.j2se.ctx.J2seCtx;
+import pasa.cbentley.core.j2se.ctx.J2seCoreCtx;
 import pasa.cbentley.core.src4.ctx.ConfigUDef;
 import pasa.cbentley.core.src4.ctx.IConfigU;
 import pasa.cbentley.core.src4.ctx.UCtx;
@@ -13,21 +13,21 @@ import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IDLog;
 import pasa.cbentley.core.src4.logging.ILogConfigurator;
 import pasa.cbentley.core.src5.ctx.C5Ctx;
+import pasa.cbentley.framework.core.data.src5.ctx.CoreData5Ctx;
+import pasa.cbentley.framework.core.data.src5.ctx.IConfigCoreData5;
+import pasa.cbentley.framework.core.draw.j2se.ctx.CoreDrawJ2seCtx;
+import pasa.cbentley.framework.core.framework.src4.app.IAppli;
+import pasa.cbentley.framework.core.framework.src4.app.IConfigApp;
+import pasa.cbentley.framework.core.framework.src4.ctx.CoreFrameworkCtx;
+import pasa.cbentley.framework.core.framework.src4.engine.CoordinatorAbstract;
+import pasa.cbentley.framework.core.framework.src4.interfaces.ICreatorAppli;
+import pasa.cbentley.framework.core.framework.src4.interfaces.IDependencies;
+import pasa.cbentley.framework.core.framework.src4.interfaces.ILauncherHost;
+import pasa.cbentley.framework.core.io.src5.ctx.CoreIO5Ctx;
+import pasa.cbentley.framework.core.io.src5.ctx.IConfigCoreIO5;
 import pasa.cbentley.framework.core.j2se.ctx.CoreFrameworkJ2seCtx;
-import pasa.cbentley.framework.core.src4.app.IAppli;
-import pasa.cbentley.framework.core.src4.app.IConfigApp;
-import pasa.cbentley.framework.core.src4.ctx.CoreFrameworkCtx;
-import pasa.cbentley.framework.core.src4.engine.CoordinatorAbstract;
-import pasa.cbentley.framework.core.src4.interfaces.IDependencies;
-import pasa.cbentley.framework.core.src4.interfaces.ICreatorAppli;
-import pasa.cbentley.framework.core.src4.interfaces.ILauncherHost;
-import pasa.cbentley.framework.coredata.src5.ctx.CoreData5Ctx;
-import pasa.cbentley.framework.coredata.src5.ctx.IConfigCoreData5;
-import pasa.cbentley.framework.coredraw.j2se.ctx.CoreDrawJ2seCtx;
-import pasa.cbentley.framework.coreio.src5.ctx.CoreIO5Ctx;
-import pasa.cbentley.framework.coreio.src5.ctx.IConfigCoreIO5;
-import pasa.cbentley.framework.coreui.j2se.ctx.CoreUiJ2seCtx;
-import pasa.cbentley.framework.coreui.src4.interfaces.IWrapperManager;
+import pasa.cbentley.framework.core.ui.j2se.ctx.CoreUiJ2seCtx;
+import pasa.cbentley.framework.core.ui.src4.interfaces.IWrapperManager;
 
 /**
  * Abstract {@link IAppli} launcher for Java Desktop.
@@ -54,11 +54,13 @@ public abstract class LaunchJ2SE implements ILauncherHost {
 
    protected final CoreFrameworkJ2seCtx cfc;
 
-   protected CoordinatorJ2SE            coordinator;
+   protected CoordinatorJ2se            coordinator;
 
-   protected final J2seCtx              j2c;
+   protected final J2seCoreCtx          j2c;
 
    protected final UCtx                 uc;
+
+   private ICreatorAppli                creatorAppli;
 
    /**
     * The constructor job is 
@@ -77,7 +79,6 @@ public abstract class LaunchJ2SE implements ILauncherHost {
       uc = new UCtx(configu, "LaunchJ2SE"); //constructor deals smoothly with a null
       boc = new BOCtx(uc);
       c5 = new C5Ctx(uc);
-
 
       //gives the data for the host code contexts
       IConfigCoreData5 configData = createConfigCoreData5(uc);
@@ -99,14 +100,6 @@ public abstract class LaunchJ2SE implements ILauncherHost {
       cuc.setWrapperManager(wrapperManager);
 
    }
-   
-   public UCtx getUC() {
-      return uc;
-   }
-   
-   public BOCtx getBOC() {
-      return boc;
-   }
 
    public LaunchJ2SE(CoreFrameworkJ2seCtx cfc) {
       this.cfc = cfc;
@@ -123,7 +116,6 @@ public abstract class LaunchJ2SE implements ILauncherHost {
 
    public void appPause() {
    }
-
 
    /**
     * Creates a hardcoded config. It will be used to read from disk for a saved config
@@ -145,15 +137,13 @@ public abstract class LaunchJ2SE implements ILauncherHost {
       return new ConfigUDef();
    }
 
-   public abstract CoordinatorJ2SE createCoodinator(CoreFrameworkJ2seCtx cfc);
+   public abstract CoordinatorJ2se createCoodinator(CoreFrameworkJ2seCtx cfc);
 
-   public abstract CoreDrawJ2seCtx createCoreDrawJ2seCtx(J2seCtx j2c, BOCtx boc);
+   public abstract CoreDrawJ2seCtx createCoreDrawJ2seCtx(J2seCoreCtx j2c, BOCtx boc);
 
    public abstract CoreFrameworkJ2seCtx createCoreFrameworkJ2seCtx(CoreUiJ2seCtx cuc, CoreData5Ctx cdc, CoreIO5Ctx cio5c);
 
    public abstract CoreUiJ2seCtx createCoreUiJ2seCtx(CoreDrawJ2seCtx cdc, CoreIO5Ctx cio5c);
-
-   public abstract J2seCtx createJ2seCtx(UCtx uc, C5Ctx c5, BOCtx boc);
 
    /**
     * Creates the {@link ICreatorAppli} for the {@link IAppli}.
@@ -161,6 +151,8 @@ public abstract class LaunchJ2SE implements ILauncherHost {
     * @return
     */
    protected abstract ICreatorAppli createCreator(UCtx uc);
+
+   public abstract J2seCoreCtx createJ2seCtx(UCtx uc, C5Ctx c5, BOCtx boc);
 
    /**
     * Decides which swing wrapper to use when creating canvases.
@@ -173,6 +165,10 @@ public abstract class LaunchJ2SE implements ILauncherHost {
 
    public IAppli getAppli() {
       return coordinator.getAppli();
+   }
+
+   public BOCtx getBOC() {
+      return boc;
    }
 
    /**
@@ -197,6 +193,10 @@ public abstract class LaunchJ2SE implements ILauncherHost {
       throw new RuntimeException("Dependencings have not been defined on this launcher");
    }
 
+   public UCtx getUC() {
+      return uc;
+   }
+
    public UCtx getUCtx() {
       return uc;
    }
@@ -207,9 +207,12 @@ public abstract class LaunchJ2SE implements ILauncherHost {
 
    public void launch() {
       //appli launcher 2nd class
-      ICreatorAppli launcherAppli = createCreator(uc);
+      creatorAppli = createCreator(uc);
+
+      toDLog().pInit("CreatorAppli Created", this, LaunchJ2SE.class, "launch@213", LVL_05_FINE, true);
+
       //shake hands with Host
-      this.startAppli(launcherAppli);
+      this.startAppli(creatorAppli);
    }
 
    /**
@@ -219,9 +222,11 @@ public abstract class LaunchJ2SE implements ILauncherHost {
     * <li> JavaFx ...
     * <li>
     */
-   public void startAppli(ICreatorAppli launcherAppli) {
+   public void startAppli(ICreatorAppli creatorAppli) {
       CoordinatorAbstract coordinator = getCoordinator();
-      coordinator.frameworkStart(launcherAppli);
+      
+      toDLog().pInit("CreatorAppli Created", creatorAppli, LaunchJ2SE.class, "startAppli@213", LVL_05_FINE, DEV_0_1LINE_THREAD);
+      coordinator.frameworkStart(creatorAppli);
 
       //this might never be called.. 
       //wait for UI thread to run?
@@ -237,9 +242,11 @@ public abstract class LaunchJ2SE implements ILauncherHost {
    }
 
    public void toString(Dctx dc) {
-      dc.root(this, LaunchJ2SE.class,250);
+      dc.root(this, LaunchJ2SE.class, 250);
       toStringPrivate(dc);
-      dc.nlLvl(getCoordinator());
+      dc.nlLvl(coordinator,"coordinator");
+      dc.nlLvl(creatorAppli,"creatorAppli");
+      
       ILogConfigurator logConfigurator = toStringGetLoggingConfig();
       if (logConfigurator == null) {
          dc.append("logConfigurator is null");

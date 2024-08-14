@@ -4,7 +4,7 @@
  */
 package pasa.cbentley.framework.core.j2se.ctx;
 
-import pasa.cbentley.framework.core.src4.ctx.IConfigCoreFramework;
+import pasa.cbentley.framework.core.framework.src4.ctx.IConfigCoreFramework;
 
 /**
  * 

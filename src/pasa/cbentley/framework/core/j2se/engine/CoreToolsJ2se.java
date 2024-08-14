@@ -12,14 +12,14 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
 
+import pasa.cbentley.framework.core.framework.src4.engine.CoreToolsAbstract;
 import pasa.cbentley.framework.core.j2se.ctx.CoreFrameworkJ2seCtx;
-import pasa.cbentley.framework.core.src4.engine.CoreToolsAbstract;
 
-public abstract class CoreToolsJ2SE extends CoreToolsAbstract {
+public abstract class CoreToolsJ2se extends CoreToolsAbstract {
 
    protected final CoreFrameworkJ2seCtx cjc;
 
-   public CoreToolsJ2SE(CoreFrameworkJ2seCtx cjc) {
+   public CoreToolsJ2se(CoreFrameworkJ2seCtx cjc) {
       super(cjc);
       this.cjc = cjc;
    }

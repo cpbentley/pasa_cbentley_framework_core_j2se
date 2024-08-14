@@ -4,6 +4,8 @@
  */
 package pasa.cbentley.framework.core.j2se.engine;
 
+import pasa.cbentley.core.src4.utils.DateUtils;
+
 /**
  * Usefull when JUnit testing the framework.
  * 
@@ -15,11 +17,11 @@ package pasa.cbentley.framework.core.j2se.engine;
  */
 public class ShutDownHook extends Thread implements Runnable {
 
-   protected final CoordinatorJ2SE coord;
+   protected final CoordinatorJ2se coord;
 
    private Runnable                runExtra;
 
-   public ShutDownHook(CoordinatorJ2SE coord) {
+   public ShutDownHook(CoordinatorJ2se coord) {
       this.coord = coord;
    }
 
@@ -31,10 +33,15 @@ public class ShutDownHook extends Thread implements Runnable {
       //#debug
       coord.toDLog().pFlow("", null, ShutDownHook.class, "run@23");
 
-
       if (runExtra != null) {
          runExtra.run();
       }
+
+      long milliTime = coord.getCFC().getTimeCtrl().getNowClock();
+
+      //#debug
+      coord.toDLog().pFlow("Final Message Time " + DateUtils.getDslashMslashYslashHourslashMin(milliTime), null, ShutDownHook.class, "run@23");
+
    }
 
 }

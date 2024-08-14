@@ -5,15 +5,15 @@
 package pasa.cbentley.framework.core.j2se.engine;
 
 import pasa.cbentley.core.src4.logging.Dctx;
+import pasa.cbentley.framework.core.framework.src4.engine.CoordinatorAbstract;
+import pasa.cbentley.framework.core.framework.src4.interfaces.ILauncherHost;
 import pasa.cbentley.framework.core.j2se.ctx.CoreFrameworkJ2seCtx;
-import pasa.cbentley.framework.core.src4.engine.CoordinatorAbstract;
-import pasa.cbentley.framework.core.src4.interfaces.ILauncherHost;
 
-public abstract class CoordinatorJ2SE extends CoordinatorAbstract {
+public abstract class CoordinatorJ2se extends CoordinatorAbstract {
 
    protected ShutDownHook shutDownHook;
 
-   protected CoordinatorJ2SE(CoreFrameworkJ2seCtx cac, ILauncherHost launcherHost) {
+   protected CoordinatorJ2se(CoreFrameworkJ2seCtx cac, ILauncherHost launcherHost) {
       super(cac, launcherHost);
 
       shutDownHook = new ShutDownHook(this);
@@ -47,12 +47,12 @@ public abstract class CoordinatorJ2SE extends CoordinatorAbstract {
 
    //#mdebug
    public void toString(Dctx dc) {
-      dc.root(this, CoordinatorJ2SE.class, 41);
+      dc.root(this, CoordinatorJ2se.class, 41);
       super.toString(dc.sup());
    }
 
    public void toString1Line(Dctx dc) {
-      dc.root1Line(this, CoordinatorJ2SE.class);
+      dc.root1Line(this, CoordinatorJ2se.class);
       super.toString1Line(dc.sup1Line());
    }
    //#enddebug

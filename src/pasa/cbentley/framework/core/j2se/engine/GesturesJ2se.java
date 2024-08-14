@@ -8,23 +8,23 @@ import pasa.cbentley.core.src4.ctx.UCtx;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IDLog;
 import pasa.cbentley.framework.core.j2se.ctx.CoreFrameworkJ2seCtx;
-import pasa.cbentley.framework.coreui.src4.ctx.ToStringStaticCoreUi;
-import pasa.cbentley.framework.coreui.src4.interfaces.IHostGestures;
-import pasa.cbentley.framework.coreui.src4.interfaces.ITechSenses;
-import pasa.cbentley.framework.coreui.src4.tech.ITechGestures;
+import pasa.cbentley.framework.core.ui.src4.ctx.ToStringStaticCoreUi;
+import pasa.cbentley.framework.core.ui.src4.interfaces.IHostGestures;
+import pasa.cbentley.framework.core.ui.src4.interfaces.ITechSenses;
+import pasa.cbentley.framework.core.ui.src4.tech.ITechGestures;
 
-public class J2SEGestures implements IHostGestures, ITechGestures {
+public class GesturesJ2se implements IHostGestures, ITechGestures {
 
    protected final CoreFrameworkJ2seCtx d;
 
-   public J2SEGestures(CoreFrameworkJ2seCtx d) {
+   public GesturesJ2se(CoreFrameworkJ2seCtx d) {
       this.d = d;
    }
 
    @Override
    public void enableGesture(int flag) {
       //#debug
-      d.toDLog().pEvent("" + ToStringStaticCoreUi.toStringGestureType(flag), null, J2SEGestures.class, "enableGesture");
+      d.toDLog().pEvent("" + ToStringStaticCoreUi.toStringGestureType(flag), null, GesturesJ2se.class, "enableGesture");
       if (flag == ITechSenses.GESTURE_TYPE_05_SHAKE) {
 
       } else if (flag == ITechSenses.GESTURE_TYPE_07_MOVE) {
@@ -40,7 +40,7 @@ public class J2SEGestures implements IHostGestures, ITechGestures {
    @Override
    public void disableGesture(int flag) {
       //#debug
-      d.toDLog().pEvent("" + ToStringStaticCoreUi.toStringGestureType(flag), null, J2SEGestures.class, "disableGesture");
+      d.toDLog().pEvent("" + ToStringStaticCoreUi.toStringGestureType(flag), null, GesturesJ2se.class, "disableGesture");
 
    }
 
