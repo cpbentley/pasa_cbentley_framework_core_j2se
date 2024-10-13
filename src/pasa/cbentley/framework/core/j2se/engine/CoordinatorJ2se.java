@@ -18,6 +18,7 @@ public abstract class CoordinatorJ2se extends CoordinatorAbstract {
 
       shutDownHook = new ShutDownHook(this);
       Runtime.getRuntime().addShutdownHook(shutDownHook);
+      
    }
    
    public ShutDownHook getShutDownHook() {
@@ -31,17 +32,17 @@ public abstract class CoordinatorJ2se extends CoordinatorAbstract {
       subExitJ2SE();
    }
 
-   protected void subResume() {
-      subResumeJ2SE();
-   }
+   protected abstract void subExitJ2SE();
 
    protected void subPause() {
       subPauseJ2SE();
    }
 
-   protected abstract void subExitJ2SE();
-
    protected abstract void subPauseJ2SE();
+
+   protected void subResume() {
+      subResumeJ2SE();
+   }
 
    protected abstract void subResumeJ2SE();
 

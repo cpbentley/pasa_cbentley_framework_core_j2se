@@ -25,7 +25,7 @@ public abstract class CoreFrameworkJ2seCtx extends CoreFrameworkCtx implements I
 
    protected final CoreIO5Ctx    ioc5;
 
-   public CoreFrameworkJ2seCtx(IConfigCoreFrameworkJ2SE config, CoreUiJ2seCtx cuc, CoreData5Ctx dac, CoreIO5Ctx ioc, ILauncherHost launcher) {
+   public CoreFrameworkJ2seCtx(IConfigCoreFrameworkJ2se config, CoreUiJ2seCtx cuc, CoreData5Ctx dac, CoreIO5Ctx ioc, ILauncherHost launcher) {
       super(config, cuc, dac, ioc, launcher);
       this.dac = dac;
       this.ioc5 = ioc;

@@ -14,7 +14,7 @@ import pasa.cbentley.framework.core.data.src5.ctx.IConfigCoreData5;
 import pasa.cbentley.framework.core.io.src4.ctx.IConfigCoreIO;
 import pasa.cbentley.framework.core.io.src5.ctx.ConfigCoreIO5Def;
 
-public abstract class ConfigCoreFrameworkJ2SE extends ConfigAbstractBO implements IConfigCoreFrameworkJ2SE {
+public abstract class ConfigCoreFrameworkJ2SE extends ConfigAbstractBO implements IConfigCoreFrameworkJ2se {
 
    private ConfigCoreIO5Def           configIO;
 

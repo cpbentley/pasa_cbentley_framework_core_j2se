@@ -11,7 +11,7 @@ import pasa.cbentley.framework.core.framework.src4.ctx.IConfigCoreFramework;
  * @author Charles Bentley
  *
  */
-public interface IConfigCoreFrameworkJ2SE extends IConfigCoreFramework {
+public interface IConfigCoreFrameworkJ2se extends IConfigCoreFramework {
 
    
    /**
