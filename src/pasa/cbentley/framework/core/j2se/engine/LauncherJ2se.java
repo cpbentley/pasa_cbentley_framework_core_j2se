@@ -13,6 +13,7 @@ import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IDLog;
 import pasa.cbentley.core.src4.logging.ILogConfigurator;
 import pasa.cbentley.core.src5.ctx.C5Ctx;
+import pasa.cbentley.core.src5.utils.LineGetterSrc5;
 import pasa.cbentley.framework.core.data.src5.ctx.CoreData5Ctx;
 import pasa.cbentley.framework.core.data.src5.ctx.IConfigCoreData5;
 import pasa.cbentley.framework.core.draw.j2se.ctx.CoreDrawJ2seCtx;
@@ -30,6 +31,8 @@ import pasa.cbentley.framework.core.ui.j2se.ctx.CoreUiJ2seCtx;
 import pasa.cbentley.framework.core.ui.src4.interfaces.IWrapperManager;
 
 /**
+ * Launcher for Eclipse Run As.
+ * 
  * Abstract {@link IAppli} launcher for Java Desktop.
  * <br>
  * Represents the MIDlet or the android Activity for J2SE based hosts.
@@ -46,21 +49,29 @@ import pasa.cbentley.framework.core.ui.src4.interfaces.IWrapperManager;
  * @author Charles Bentley
  *
  */
-public abstract class LaunchJ2SE implements ILauncherHost {
+public abstract class LauncherJ2se implements ILauncherHost {
 
-   protected final BOCtx                boc;
+   protected BOCtx                boc;
 
-   protected final C5Ctx                c5;
+   protected C5Ctx                c5;
 
-   protected final CoreFrameworkJ2seCtx cfc;
+   protected CoreFrameworkJ2seCtx cfc;
 
-   protected CoordinatorJ2se            coordinator;
+   protected CoordinatorJ2se      coordinator;
 
-   private ICreatorAppli                creatorAppli;
+   private ICreatorAppli          creatorAppli;
 
-   protected final J2seCoreCtx          j2c;
+   protected J2seCoreCtx          j2c;
 
-   protected final UCtx                 uc;
+   protected UCtx                 uc;
+
+   public LauncherJ2se() {
+      // 1: no logger yet at this stage. We create/fetch the ConfigU
+      IConfigU configU = createConfigU();
+
+      a_Init(configU);
+
+   }
 
    /**
     * The constructor job is 
@@ -68,15 +79,38 @@ public abstract class LaunchJ2SE implements ILauncherHost {
     * <li>to create the code context with their state as soon as possible.
     * <li>
     */
-   public LaunchJ2SE() {
+   public LauncherJ2se(IConfigU configU) {
 
-      //no logger yet at this stage
-      IConfigU configu = createConfigU(); //configU fetches the ILogConfigurator
-      //set the logconfigurator if none
-      ILogConfigurator logConfigurator = this.toStringGetLoggingConfig();
-      configu.toStringSetLogConfigurator(logConfigurator);
+      if (configU == null) {
+         configU = createConfigU();
+      }
+      a_Init(configU);
 
-      uc = new UCtx(configu, "LaunchJ2SE"); //constructor deals smoothly with a null
+      //#debug
+      toDLog().pCreate("", this, LauncherJ2se.class, "Created@" + toStringGetLine(100), LVL_04_FINER, true);
+
+   }
+
+   private void a_Init(IConfigU configu) {
+
+      //which log configurator is used ? ConfigU or Launcher ?
+      //config log is stronger
+      ILogConfigurator logConfigurator = configu.toStringGetLogConfigurator();
+      if (logConfigurator == null) {
+         // 2: we fetch the ILogConfigurator from the subclass of LauncherJ2se
+         logConfigurator = this.toStringGetLoggingConfig();
+         configu.toStringSetLogConfigurator(logConfigurator);
+      }
+
+      //we set the logconfigurator into the configU so that UCtx has it
+      //we don't want to polute the constructor of UCtx with a toString object.
+      String name = configu.getUCtxName();
+      if (name == null) {
+         name = "LaunchJ2SE";
+      }
+      uc = new UCtx(configu, name); //constructor deals smoothly with a null
+      uc.toStringSetLineNumberGetter(new LineGetterSrc5());
+
       boc = new BOCtx(uc);
       c5 = new C5Ctx(uc);
 
@@ -99,17 +133,17 @@ public abstract class LaunchJ2SE implements ILauncherHost {
       IWrapperManager wrapperManager = createWrapperManager(cfc);
       cuc.setWrapperManager(wrapperManager);
 
-      //#debug
-      toDLog().pCreate("", this, LaunchJ2SE.class, "Created@103", LVL_04_FINER, true);
-
    }
 
-   public LaunchJ2SE(CoreFrameworkJ2seCtx cfc) {
+   public LauncherJ2se(CoreFrameworkJ2seCtx cfc) {
       this.cfc = cfc;
       this.uc = cfc.getUC();
       this.boc = cfc.getBOC();
       this.c5 = cfc.getC5();
       j2c = createJ2seCtx(uc, c5, boc);
+
+      //#debug
+      toDLog().pCreate("", this, LauncherJ2se.class, "Created@" + toStringGetLine(120), LVL_04_FINER, true);
 
    }
 
@@ -134,7 +168,7 @@ public abstract class LaunchJ2SE implements ILauncherHost {
    /**
     * Override if you want to give a special config that is not {@link ConfigUDef}.
     * @param uc
-    * @return
+    * @return cannot be null
     */
    protected IConfigU createConfigU() {
       return new ConfigUDef();
@@ -166,6 +200,12 @@ public abstract class LaunchJ2SE implements ILauncherHost {
     */
    public abstract IWrapperManager createWrapperManager(CoreFrameworkJ2seCtx cfc);
 
+   /**
+    * Returns the {@link IAppli} once it has been started.
+    * 
+    * Must be called in the Gui Thread, otherwise may return null
+    * @return
+    */
    public IAppli getAppli() {
       return coordinator.getAppli();
    }
@@ -189,6 +229,9 @@ public abstract class LaunchJ2SE implements ILauncherHost {
       return coordinator;
    }
 
+   /**
+    * Override this if not this class is implementing {@link IDependencies} 
+    */
    public IDependencies getDependencies() {
       if (this instanceof IDependencies) {
          return (IDependencies) this;
@@ -212,7 +255,7 @@ public abstract class LaunchJ2SE implements ILauncherHost {
       //appli launcher 2nd class
       creatorAppli = createCreator(uc);
 
-      toDLog().pInit("CreatorAppli created : ", creatorAppli, LaunchJ2SE.class, "launch@213", LVL_05_FINE, true);
+      toDLog().pInit("CreatorAppli created : ", creatorAppli, LauncherJ2se.class, "launch@213", LVL_05_FINE, true);
 
       //shake hands with Host
       this.startAppli(creatorAppli);
@@ -228,7 +271,7 @@ public abstract class LaunchJ2SE implements ILauncherHost {
    public void startAppli(ICreatorAppli creatorAppli) {
       CoordinatorAbstract coordinator = getCoordinator();
 
-      toDLog().pInit("CreatorAppli Created", creatorAppli, LaunchJ2SE.class, "startAppli@213", LVL_05_FINE, DEV_0_1LINE_THREAD);
+      toDLog().pInit("CreatorAppli Created", creatorAppli, LauncherJ2se.class, "startAppli@213", LVL_05_FINE, DEV_X_ONELINE_THRE);
       coordinator.frameworkStart(creatorAppli);
 
       //this might never be called.. 
@@ -245,7 +288,7 @@ public abstract class LaunchJ2SE implements ILauncherHost {
    }
 
    public void toString(Dctx dc) {
-      dc.root(this, LaunchJ2SE.class, 250);
+      dc.root(this, LauncherJ2se.class, 250);
       toStringPrivate(dc);
       dc.nlLvl(coordinator, "coordinator");
       dc.nlLvl(creatorAppli, "creatorAppli");
@@ -263,8 +306,12 @@ public abstract class LaunchJ2SE implements ILauncherHost {
    }
 
    public void toString1Line(Dctx dc) {
-      dc.root1Line(this, LaunchJ2SE.class);
+      dc.root1Line(this, LauncherJ2se.class);
       toStringPrivate(dc);
+   }
+
+   public String toStringGetLine(int value) {
+      return toStringGetUCtx().toStringGetLine(value);
    }
 
    /**
@@ -278,7 +325,7 @@ public abstract class LaunchJ2SE implements ILauncherHost {
     * Returns the logging configurator for the logger
     */
    public ILogConfigurator toStringGetLoggingConfig() {
-      return new LogConfiguratorJ2SE();
+      return new LogConfiguratorJ2se();
    }
 
    public UCtx toStringGetUCtx() {

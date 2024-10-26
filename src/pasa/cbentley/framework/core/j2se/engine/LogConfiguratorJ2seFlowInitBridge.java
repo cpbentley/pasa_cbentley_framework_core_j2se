@@ -6,19 +6,22 @@ package pasa.cbentley.framework.core.j2se.engine;
 
 import pasa.cbentley.core.src4.logging.IDLogConfig;
 import pasa.cbentley.core.src4.logging.ILogConfigurator;
-import pasa.cbentley.core.src4.logging.ITechConfig;
 import pasa.cbentley.core.src4.logging.ITechLvl;
 
-public class LogConfiguratorJ2SE implements ILogConfigurator {
+public class LogConfiguratorJ2seFlowInitBridge implements ILogConfigurator {
 
-   public LogConfiguratorJ2SE() {
+   public LogConfiguratorJ2seFlowInitBridge() {
    }
 
    public void apply(IDLogConfig log) {
       log.setLevelGlobal(ITechLvl.LVL_03_FINEST);
-      log.setFlagMaster(ITechConfig.MASTER_FLAG_02_OPEN_ALL_PRINT, true);
       
-      //log.setFlagTag(FLAG_09_PRINT_FLOW, true);
+      
+      log.setFlagTag(FLAG_09_PRINT_FLOW, true);
+      log.setFlagTag(FLAG_20_PRINT_INIT, true);
+      log.setFlagTag(FLAG_19_PRINT_BRIDGE, true);
+      
+      
    }
 
 }

@@ -8,20 +8,24 @@ import pasa.cbentley.core.src4.logging.IDLogConfig;
 import pasa.cbentley.core.src4.logging.ILogConfigurator;
 import pasa.cbentley.core.src4.logging.ITechLvl;
 
-public class LogConfiguratorJ2SE2FlowInitBridge implements ILogConfigurator {
+public class LogConfiguratorJ2seSimulation implements ILogConfigurator {
 
-   public LogConfiguratorJ2SE2FlowInitBridge() {
+   public LogConfiguratorJ2seSimulation() {
    }
 
    public void apply(IDLogConfig log) {
       log.setLevelGlobal(ITechLvl.LVL_03_FINEST);
       
       
-      log.setFlagTag(FLAG_09_PRINT_FLOW, true);
-      log.setFlagTag(FLAG_20_PRINT_INIT, true);
-      log.setFlagTag(FLAG_19_PRINT_BRIDGE, true);
+      log.setFlagMaster(MASTER_FLAG_07_THREAD_DATA, true);
+      log.setFlagMaster(MASTER_FLAG_10_OWNER_NAME_UC, true);
       
+      log.setFlagMaster(MASTER_FLAG_12_LEVEL, true);
       
+      log.setFlagTag(FLAG_01_PRINT_ALWAYS, true);
+      log.setFlagTag(FLAG_02_PRINT_NULL, true);
+      
+      log.setFlagTag(FLAG_27_PRINT_SIMULATION, true);
    }
 
 }

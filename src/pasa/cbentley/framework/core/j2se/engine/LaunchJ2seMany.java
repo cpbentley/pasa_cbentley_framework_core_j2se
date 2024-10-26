@@ -216,7 +216,7 @@ public abstract class LaunchJ2seMany implements ILauncherHost {
    public void startAppli(ICreatorAppli creatorAppli) {
       CoordinatorAbstract coordinator = getCoordinator();
 
-      toDLog().pInit("CreatorAppli Created", creatorAppli, LaunchJ2seMany.class, "startAppli@213", LVL_05_FINE, DEV_0_1LINE_THREAD);
+      toDLog().pInit("CreatorAppli Created", creatorAppli, LaunchJ2seMany.class, "startAppli@213", LVL_05_FINE, DEV_X_ONELINE_THRE);
       coordinator.frameworkStart(creatorAppli);
 
       //this might never be called.. 
@@ -266,7 +266,7 @@ public abstract class LaunchJ2seMany implements ILauncherHost {
     * Returns the logging configurator for the logger
     */
    public ILogConfigurator toStringGetLoggingConfig() {
-      return new LogConfiguratorJ2SE();
+      return new LogConfiguratorJ2se();
    }
 
    public UCtx toStringGetUCtx() {
