@@ -10,9 +10,9 @@ import pasa.cbentley.core.src4.logging.ILogConfigurator;
 import pasa.cbentley.core.src4.logging.ILogConfiguratorCtx;
 import pasa.cbentley.core.src4.logging.ITechLvl;
 
-public class LogConfiguratorJ2seCmdCreateFlow implements ILogConfiguratorCtx {
+public class LogConfiguratorJ2seCmdCreateEvent implements ILogConfiguratorCtx {
 
-   public LogConfiguratorJ2seCmdCreateFlow() {
+   public LogConfiguratorJ2seCmdCreateEvent() {
    }
 
    public void apply(IDLogConfig log) {
@@ -27,7 +27,7 @@ public class LogConfiguratorJ2seCmdCreateFlow implements ILogConfiguratorCtx {
 
       log.setFlagTag(FLAG_25_PRINT_CREATE, true);
       log.setFlagTag(FLAG_11_PRINT_COMMANDS, true);
-      log.setFlagTag(FLAG_09_PRINT_FLOW, true);
+      log.setFlagTag(FLAG_07_PRINT_EVENT, true);
 
    }
 

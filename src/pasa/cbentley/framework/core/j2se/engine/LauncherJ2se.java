@@ -271,7 +271,7 @@ public abstract class LauncherJ2se implements ILauncherHost {
    public void startAppli(ICreatorAppli creatorAppli) {
       CoordinatorAbstract coordinator = getCoordinator();
 
-      toDLog().pInit("CreatorAppli Created", creatorAppli, LauncherJ2se.class, "startAppli@213", LVL_05_FINE, DEV_X_ONELINE_THRE);
+      toDLog().pInit("CreatorAppli Created", creatorAppli, LauncherJ2se.class, "startAppli@213", LVL_05_FINE, DEV_X_ONELINE_THREAD);
       coordinator.frameworkStart(creatorAppli);
 
       //this might never be called.. 
